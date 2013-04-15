@@ -1,0 +1,25 @@
+{
+  "author": "Yosuke Kumakura <kumatch@gmail.com>",
+  "name": "paranoic",
+  "description": "paranoic",
+  "version": "0.1.0",
+  "main": "./lib/paranoic.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kumatch/paranoic.git"
+  },
+  "github": "https://github.com/kumatch/paranoic",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "chai": "*",
+    "mocha": "*"
+  },
+  "optionalDependencies": {},
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "make test"
+  }
+}
