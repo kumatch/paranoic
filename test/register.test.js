@@ -4,34 +4,54 @@ var Paranoic = require('../');
 describe('register and use', function () {
     var con = new Paranoic();
 
-    it('組み込みモジュールを登録して使う', function () {
-        con.register('fs', {
-            module: "fs"
-        });
-        var fs = con.get('fs');
+    describe('組み込みモジュール fs を登録して使う', function () {
+        var service;
 
-        expect(fs.existsSync(__filename)).to.be.true;
-        expect(fs.existsSync("path/to/invalid")).to.be.false;
+        before(function () {
+            con.register('fs', {
+                module: "fs"
+            });
+            service = con.get('fs');
+        });
+
+        it('このファイルの existsSync 結果は真', function () {
+            expect(service.existsSync(__filename)).to.be.true;
+        });
+
+        it('存在しないファイルの existsSync 結果は偽', function () {
+            expect(service.existsSync("path/to/invalid")).to.be.false;
+        });
     });
 
-    it('関数を登録して使う', function () {
-        con.register('func', {
-            module: __dirname + "/samples/hello_function"
-        });
-        var func = con.get('func');
 
-        expect(func()).to.equal('hello');
+    describe('hello を返す関数を登録して使う', function () {
+        var service;
+
+        before(function () {
+            con.register('func', {
+                module: __dirname + "/samples/hello_function"
+            });
+            service = con.get('func');
+        });
+
+        it('実行結果は hello', function () {
+            expect(service()).to.equal('hello');
+        });
     });
 
-    it('オブジェクトを登録して使う', function () {
-        con.register('obj', {
-            module: __dirname + "/samples/foobarbaz_object"
-        });
-        var obj = con.get('obj');
+    describe('OK を返す foo 関数を持つオブジェクトを登録して使う', function () {
+        var service;
 
-        expect(obj.foo()).to.equal('Foo');
-        expect(obj.bar()).to.equal('Bar');
-        expect(obj.baz()).to.equal('Baz');
+        before(function () {
+            con.register('obj', {
+                module: __dirname + "/samples/foo_object"
+            });
+            service = con.get('obj');
+        });
+
+        it('foo() 結果は OK', function () {
+            expect(service.foo()).to.equal('OK');
+        });
     });
 
     it('設定値を登録して使う', function () {

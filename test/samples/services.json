@@ -1,0 +1,32 @@
+{
+  "services": {
+    "list": {
+      "parameters": [ 1, 3, 5 ]
+    },
+    "obj": {
+      "parameters": { "example": 42 }
+    },
+
+    "fs": {
+      "module": "fs"
+    },
+    "foo": {
+      "module": "#{base}/samples/di_construct_foo",
+      "instance": {
+        "arguments": [ "@fs" ]
+      }
+    },
+    "bar": {
+      "module": "#{base}/samples/di_calls_bar",
+      "instance": {
+        "arguments": [ ]
+      },
+      "calls": [
+        { "method": "setFoo",   "arguments": [ "@foo" ] },
+        { "method": "setUndef", "arguments": [ "@undefined" ] },
+        { "method": "setList",  "arguments": [ "@list" ] },
+        { "method": "setObj",   "arguments": [ "@obj" ] }
+      ]
+    }
+  }
+}
