@@ -1,31 +1,26 @@
 {
-  "services": {
-    "list": {
-      "parameters": [ 1, 3, 5 ]
-    },
-    "obj": {
-      "parameters": { "example": 42 }
-    },
+  "parameters": {
+    "name": "paranoia",
+    "setter": "setFoo"
+  },
 
-    "fs": {
-      "module": "fs"
-    },
+  "services": {
     "foo": {
-      "module": "#{base}/samples/di_construct_foo",
+      "module": "#{base}/samples/di_with_parameter_foo",
       "instance": {
-        "arguments": [ "@fs" ]
+        "arguments": [ "Mr.#{name}" ]
       }
     },
     "bar": {
-      "module": "#{base}/samples/di_calls_bar",
+      "module": "#{base}/samples/di_with_parameter_bar",
       "instance": {
         "arguments": [ ]
       },
       "calls": [
-        { "method": "setFoo",   "arguments": [ "@foo" ] },
-        { "method": "setUndef", "arguments": [ "@undefined" ] },
-        { "method": "setList",  "arguments": [ "@list" ] },
-        { "method": "setObj",   "arguments": [ "@obj" ] }
+        {
+          "method": "#{setter}",
+          "arguments": [ "@foo" ]
+        }
       ]
     }
   }

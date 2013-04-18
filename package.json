@@ -3,7 +3,7 @@
   "name": "paranoic",
   "description": "paranoic",
   "version": "0.1.0",
-  "main": "./lib/paranoic.js",
+  "main": "./lib/container.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/kumatch/paranoic.git"

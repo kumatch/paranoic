@@ -7,9 +7,7 @@ describe('register and create instance', function () {
     it('関数を登録して new 演算子でインスタンスを作成', function () {
         con.register('hello_new1', {
             module: __dirname + "/samples/hello_new",
-            instance: {
-                arguments: []
-            }
+            instance: {}
         });
 
         con.register('hello_new2', {
@@ -29,9 +27,7 @@ describe('register and create instance', function () {
     it('関数を登録して関数実行で結果を受け取る', function () {
         con.register('hello_call1', {
             module: __dirname + "/samples/hello_call",
-            instance: {
-                arguments: []
-            }
+            instance: {}
         });
 
         con.register('hello_call2', {
@@ -48,12 +44,11 @@ describe('register and create instance', function () {
         expect(hello2.say()).to.equal('hello, paranoia');
     });
 
-    it('オブジェクトを登録して関数実行で結果を受け取る', function () {
+    it('オブジェクトを登録して factory 関数実行で結果を受け取る', function () {
         con.register('hello_method_create1', {
             module: __dirname + "/samples/hello_method_create",
             instance: {
-                method: "createInstance",
-                arguments: []
+                method: "createInstance"
             }
         });
 
