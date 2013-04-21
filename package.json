@@ -1,7 +1,7 @@
 {
   "author": "Yosuke Kumakura <kumatch@gmail.com>",
   "name": "paranoic",
-  "description": "paranoic",
+  "description": "Dependency injection and service container for Node",
   "version": "0.1.0",
   "main": "./lib/container.js",
   "repository": {
