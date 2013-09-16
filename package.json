@@ -14,13 +14,16 @@
   },
   "devDependencies": {
     "chai": "*",
-    "mocha": "*"
+    "mocha": "*",
+
+    "grunt": "~0.4",
+    "grunt-mocha-test": "*"
   },
   "optionalDependencies": {},
   "engines": {
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "make test"
+    "test": "grunt test"
   }
 }
