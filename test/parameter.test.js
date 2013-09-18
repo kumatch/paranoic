@@ -55,4 +55,18 @@ describe('Parameter', function () {
             });
         });
     });
+
+    // describe('オブジェクトを階層的に foo.bar.baz として登録して', function () {
+    //     before(function () {
+    //         con.setParameter('foo.bar.baz', obj);
+    //     });
+
+    //     it('foo.bar.baz で登録オブジェクトを得る', function () {
+    //         expect(con.getParameter('foo.bar.baz')).to.deep.equal(obj);
+    //     });
+
+    //     it('foo.bar で bar 名に登録オブジェクトを要素にもつオブジェクトを得る', function () {
+    //         expect(con.getParameter('foo.bar')).to.deep.equal({ bar: obj });
+    //     });
+    // });
 });

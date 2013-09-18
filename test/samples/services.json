@@ -6,19 +6,19 @@
 
   "services": {
     "foo": {
-      "module": "#{base}/samples/di_with_parameter_foo",
+      "module": "<%= base %>/samples/di_with_parameter_foo",
       "instance": {
-        "arguments": [ "Mr.#{name}" ]
+        "arguments": [ "Mr.<%= name %>" ]
       }
     },
     "bar": {
-      "module": "#{base}/samples/di_with_parameter_bar",
+      "module": "<%= base %>/samples/di_with_parameter_bar",
       "instance": {
         "arguments": [ ]
       },
       "calls": [
         {
-          "method": "#{setter}",
+          "method": "<%= setter %>",
           "arguments": [ "@foo" ]
         }
       ]
