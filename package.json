@@ -10,7 +10,6 @@
   },
   "github": "https://github.com/kumatch/paranoic",
   "dependencies": {
-    "keyplace": "0.2",
     "breath": "0.1"
   },
   "devDependencies": {
