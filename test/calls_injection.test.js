@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
-var Paranoic = require('../../');
+var Paranoic = require('../');
 
-describe('call methods', function () {
+describe('calls injection', function () {
     var con;
 
     before(function () {

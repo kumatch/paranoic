@@ -2,24 +2,34 @@ var expect = require('chai').expect;
 var Paranoic = require('../');
 
 describe('register by json', function () {
-    var filename = __dirname + "/samples/services.json";
+    var filename = __dirname + "/samples/configuration.json";
     var con;
 
     before(function () {
         con = new Paranoic(filename);
-        con.setParameter('base', __dirname);
+        con.setParameter('sample_path', __dirname + "/samples");
     });
 
-    describe('サービスを取得すると依存解決されたインスタンスを得る', function () {
-        var foo, bar;
+    it('use a service of function arguments injection', function () {
+        var service = con.get('foo');
 
-        before(function () {
-            foo = con.get('foo');
-            bar = con.get('bar');
-        });
+        expect(service.exists(__filename)).be.true;
+        expect(service.exists("/path/to/invalid")).be.false;
+    });
 
-        it('bar 経由で foo のプロパティに参照できる', function () {
-            expect(bar.foo.name).to.equal('Mr.paranoia');
-        });
+    it('use a service of method calls injection', function () {
+        var service = con.get('bar');
+
+        expect(service.name).be.equals("OK");
+        expect(service.exists(__filename)).be.true;
+        expect(service.exists("/path/to/invalid")).be.false;
+    });
+
+    it('use a service of properies injection', function () {
+        var service = con.get('baz');
+
+        expect(service.name).be.equals("OK");
+        expect(service.exists(__filename)).be.true;
+        expect(service.exists("/path/to/invalid")).be.false;
     });
 });

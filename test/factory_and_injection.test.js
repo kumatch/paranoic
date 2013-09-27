@@ -1,12 +1,17 @@
 var expect = require('chai').expect;
-var Paranoic = require('../../');
+var Paranoic = require('../');
 
-describe('register function and object', function () {
+describe('service factory', function () {
     var con;
 
-    before(function () {
+    beforeEach(function () {
         con = new Paranoic();
+        con.setParameter('sample_path', __dirname + "/samples");
+        con.setParameter('factory_method', "create");
+    });
 
+
+    it('register function and object', function () {
         con.register('fs', {
             factory: {
                 module: 'fs'
@@ -18,9 +23,7 @@ describe('register function and object', function () {
                 module: __dirname + "/samples/function"
             }
         });
-    });
 
-    it('get services', function () {
         var fs = con.get('fs');
         var foo = con.get('foo');
 
@@ -29,14 +32,35 @@ describe('register function and object', function () {
 
         expect(foo()).be.equal("OK");
     });
-});
 
 
-describe('function factory', function () {
-    var con;
+    it('register with parameter', function () {
+        con.setParameter('core.fs', 'fs');
 
-    before(function () {
-        con = new Paranoic();
+        con.register('fs', {
+            factory: {
+                module: '<%= core.fs %>'
+            }
+        });
+
+        con.register('foo', {
+            factory: {
+                module: "<%= sample_path %>/function"
+            }
+        });
+
+        var fs = con.get('fs');
+        var foo = con.get('foo');
+
+        expect(fs.existsSync(__filename)).be.true;
+        expect(fs.existsSync("/path/to/invalid")).be.false;
+
+        expect(foo()).be.equal("OK");
+    });
+
+
+    it('function factory', function () {
+        con.setParameter('sample_path', __dirname + "/samples");
 
         con.register('fs', {
             factory: {
@@ -46,27 +70,19 @@ describe('function factory', function () {
 
         con.register('foo', {
             factory: {
-                module: __dirname + "/samples/function_factory",
+                module: "<%= sample_path %>/function_factory",
                 arguments: [ "@fs" ]
             }
         });
-    });
 
-    it('get foo service', function () {
         var foo = con.get('foo');
 
         expect(foo.exists(__filename)).be.true;
         expect(foo.exists("/path/to/invalid")).be.false;
     });
-});
 
 
-describe('constructor factory', function () {
-    var con;
-
-    before(function () {
-        con = new Paranoic();
-
+    it('constructor factory', function () {
         con.register('fs', {
             factory: {
                 module: 'fs'
@@ -75,26 +91,18 @@ describe('constructor factory', function () {
 
         con.register('foo', {
             factory: {
-                module: __dirname + "/samples/constructor_factory",
+                module: "<%= sample_path %>/constructor_factory",
                 arguments: [ "@fs" ]
             }
         });
-    });
 
-    it('get foo service', function () {
         var foo = con.get('foo');
 
         expect(foo.exists(__filename)).be.true;
         expect(foo.exists("/path/to/invalid")).be.false;
     });
-});
 
-describe('method factory', function () {
-    var con;
-
-    before(function () {
-        con = new Paranoic();
-
+    it('method factory', function () {
         con.register('fs', {
             factory: {
                 module: 'fs'
@@ -103,26 +111,19 @@ describe('method factory', function () {
 
         con.register('foo', {
             factory: {
-                module: __dirname + "/samples/method_factory",
-                method: "create",
+                module: "<%= sample_path %>/method_factory",
+                method: "<%= factory_method %>",
                 arguments: [ "@fs" ]
             }
         });
-    });
 
-    it('get foo service', function () {
         var foo = con.get('foo');
 
         expect(foo.exists(__filename)).be.true;
         expect(foo.exists("/path/to/invalid")).be.false;
     });
-});
 
-describe('service function factory', function () {
-    var con;
-
-    before(function () {
-        con = new Paranoic();
+    it('service function factory', function () {
 
         con.register('fs', {
             factory: {
@@ -139,26 +140,18 @@ describe('service function factory', function () {
 
         con.register('bar', {
             factory: {
-                module: __dirname + "/samples/service_function_factory"
+                module: "<%= sample_path %>/service_function_factory"
             }
         });
-    });
 
-    it('get foo service', function () {
         var foo = con.get('foo');
 
         expect(foo.exists(__filename)).be.true;
         expect(foo.exists("/path/to/invalid")).be.false;
     });
-});
 
 
-describe('service method factory', function () {
-    var con;
-
-    before(function () {
-        con = new Paranoic();
-
+    it('service method factory', function () {
         con.register('fs', {
             factory: {
                 module: 'fs'
@@ -168,19 +161,17 @@ describe('service method factory', function () {
         con.register('foo', {
             factory: {
                 service: "bar",
-                method: "create",
+                method: "<%= factory_method %>",
                 arguments: [ "@fs" ]
             }
         });
 
         con.register('bar', {
             factory: {
-                module: __dirname + "/samples/service_function_factory"
+                module: "<%= sample_path %>/service_function_factory"
             }
         });
-    });
 
-    it('get foo service', function () {
         var foo = con.get('foo');
 
         expect(foo.exists(__filename)).be.true;
