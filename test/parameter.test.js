@@ -1,72 +1,164 @@
 var expect = require('chai').expect;
 var Paranoic = require('../');
 
-var num = 42;
-var str = "a example string.";
-var list = [ "foo", "bar", "baz" ];
-var obj = { foo: 1, bar: 2, baz: 3 };
-
 describe('Parameter', function () {
-    var con = new Paranoic();
+    var con;
 
-    describe('数値、文字列、リスト、オブジェクトを個々に登録して', function () {
-        before(function () {
-            con.setParameter('number', num);
-            con.setParameter('string', str);
-            con.setParameter('list', list);
-            con.setParameter('object', obj);
-        });
-
-        it('数値を取得する', function () {
-            expect(con.getParameter('number')).to.equal(num);
-            expect(con.getParameter('number')).to.be.a('number');
-            expect(con.hasParameter('number')).to.be.true;
-        });
-        it('文字列を取得する', function () {
-            expect(con.getParameter('string')).to.equal(str);
-            expect(con.getParameter('string')).to.be.a('string');
-            expect(con.hasParameter('string')).to.be.true;
-        });
-        it('リストを取得する', function () {
-            expect(con.getParameter('list')).to.equal(list);
-            expect(con.getParameter('list')).to.be.instanceof(Array);
-            expect(con.hasParameter('list')).to.be.true;
-        });
-        it('オブジェクトを取得する', function () {
-            expect(con.getParameter('object')).to.equal(obj);
-            expect(con.getParameter('object')).to.be.instanceof(Object);
-            expect(con.hasParameter('object')).to.be.true;
-        });
-        it('存在しないパラメータは取得できない', function () {
-            expect(con.getParameter('invalid')).to.be.undefined;
-            expect(con.hasParameter('invalid')).to.be.false;
-        });
-
-
-        describe('登録済み数値を上書き更新すると', function () {
-            var num2 = 12345;
-
-            before(function () {
-                con.setParameter('number', num2);
-            });
-
-            it('数値取得は上書き後のものになる', function () {
-                expect(con.getParameter('number')).to.equal(num2);
-            });
-        });
+    beforeEach(function () {
+        con = new Paranoic();
     });
 
-    // describe('オブジェクトを階層的に foo.bar.baz として登録して', function () {
-    //     before(function () {
-    //         con.setParameter('foo.bar.baz', obj);
-    //     });
+    it('use number parameter', function () {
+        var name = 'foo';
+        var value = 42;
 
-    //     it('foo.bar.baz で登録オブジェクトを得る', function () {
-    //         expect(con.getParameter('foo.bar.baz')).to.deep.equal(obj);
-    //     });
+        con.setParameter(name, value);
 
-    //     it('foo.bar で bar 名に登録オブジェクトを要素にもつオブジェクトを得る', function () {
-    //         expect(con.getParameter('foo.bar')).to.deep.equal({ bar: obj });
-    //     });
-    // });
+        expect(con.getParameter(name)).to.equal(value);
+        expect(con.getParameter(name)).to.be.a('number');
+        expect(con.hasParameter(name)).to.be.true;
+    });
+
+    it('use string parameter', function () {
+        var name = 'foo';
+        var value = "a sample string.";
+
+        con.setParameter(name, value);
+
+        expect(con.getParameter(name)).to.equal(value);
+        expect(con.getParameter(name)).to.be.a('string');
+        expect(con.hasParameter(name)).to.be.true;
+    });
+
+    it('use array parameter', function () {
+        var name = 'foo';
+        var value = [ "foo", "bar", "baz" ];
+
+        con.setParameter(name, value);
+
+        expect(con.getParameter(name)).to.equal(value);
+        expect(con.getParameter(name)).to.be.a('array');
+        expect(con.hasParameter(name)).to.be.true;
+    });
+
+    it('use object parameter', function () {
+        var name = 'foo';
+        var value = { foo: 10, bar: 20, baz: 30 };
+
+        con.setParameter(name, value);
+
+        expect(con.getParameter(name)).to.equal(value);
+        expect(con.getParameter(name)).to.be.a('object');
+        expect(con.hasParameter(name)).to.be.true;
+    });
+
+    it('set no parameter', function () {
+        var name = 'foo';
+
+        expect(con.getParameter(name)).to.be.a('undefined');
+        expect(con.hasParameter(name)).to.be.false;
+    });
+
+    it('overwrite parameter', function () {
+        var name = 'foo';
+        var value1 = 10;
+        var value2 = 20;
+
+        con.setParameter(name, value1);
+
+        expect(con.getParameter(name)).to.equal(value1);
+        expect(con.getParameter(name)).to.not.equal(value2);
+        expect(con.hasParameter(name)).to.be.true;
+
+        con.setParameter(name, value2);
+
+        expect(con.getParameter(name)).to.not.equal(value1);
+        expect(con.getParameter(name)).to.equal(value2);
+        expect(con.hasParameter(name)).to.be.true;
+    });
+
+    it('remove parameter', function () {
+        var name = 'foo';
+        var value = 10;
+
+        con.setParameter(name, value);
+
+        expect(con.getParameter(name)).to.equal(value);
+        expect(con.getParameter(name)).to.be.a('number');
+        expect(con.hasParameter(name)).to.be.true;
+
+        con.removeParameter(name);
+
+        expect(con.getParameter(name)).to.be.a('undefined');
+        expect(con.hasParameter(name)).to.be.false;
+    });
+
+
+    describe('set nested parameter', function () {
+        var value = 42;
+
+        beforeEach(function () {
+            con.setParameter("a.b.c", value);
+            con.setParameter("d", {
+                e: {
+                    f: value
+                }
+            });
+        });
+
+        it('access to a dot key parameter', function () {
+            var a_b_c = con.getParameter('a.b.c');
+            var a_b = con.getParameter('a.b');
+            var a = con.getParameter('a');
+
+            expect(a_b_c).to.equal(value);
+            expect(a_b.c).to.equal(value);
+            expect(a.b.c).to.equal(value);
+        });
+
+        it('access to a nested object parameter', function () {
+            var d = con.getParameter('d');
+            var d_e = con.getParameter('d.e');
+            var d_e_f = con.getParameter('d.e.f');
+
+            expect(d.e.f).to.equal(value);
+            expect(d_e.f).to.equal(value);
+            expect(d_e_f).to.equal(value);
+        });
+
+    });
+
+
+    describe('extends parameter object', function () {
+        var value = 42;
+
+        beforeEach(function () {
+            con.extendParameters({
+                a: {
+                    b: {
+                        c: value
+                    }
+                },
+
+                d: {
+                    e: {
+                        f: value
+                    }
+                }
+            });
+        });
+
+        it('access to parameters', function () {
+            var a = con.getParameter('a');
+            var a_b_c = con.getParameter('a.b.c');
+
+            var d = con.getParameter('d');
+            var d_e_f = con.getParameter('d.e.f');
+
+            expect(a.b.c).to.equal(value);
+            expect(a_b_c).to.equal(value);
+            expect(d.e.f).to.equal(value);
+            expect(d_e_f).to.equal(value);
+        });
+    });
 });

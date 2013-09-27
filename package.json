@@ -10,7 +10,9 @@
   },
   "github": "https://github.com/kumatch/paranoic",
   "dependencies": {
-    "breath": "0.1"
+    "lodash": "2.1",
+    "breath": "0.1",
+    "nestraight": "0.3"
   },
   "devDependencies": {
     "chai": "*",
