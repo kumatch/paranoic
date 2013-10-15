@@ -37,8 +37,8 @@ describe('persistence service', function () {
 
     it('register persistence service', function () {
         con.register('foo', {
+            persistence: true,
             factory: {
-                persistence: true,
                 module: __dirname + "/samples/properties.js",
                 arguments: []
             },
