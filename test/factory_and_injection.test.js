@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 var Paranoic = require('../');
 
-describe('service factory', function () {
+describe('factory and injection', function () {
     var con;
 
     beforeEach(function () {
@@ -114,61 +114,6 @@ describe('service factory', function () {
                 module: "<%= sample_path %>/method_factory",
                 method: "<%= factory_method %>",
                 arguments: [ "@fs" ]
-            }
-        });
-
-        var foo = con.get('foo');
-
-        expect(foo.exists(__filename)).be.true;
-        expect(foo.exists("/path/to/invalid")).be.false;
-    });
-
-    it('service function factory', function () {
-
-        con.register('fs', {
-            factory: {
-                module: 'fs'
-            }
-        });
-
-        con.register('foo', {
-            factory: {
-                service: "bar",
-                arguments: [ "@fs" ]
-            }
-        });
-
-        con.register('bar', {
-            factory: {
-                module: "<%= sample_path %>/service_function_factory"
-            }
-        });
-
-        var foo = con.get('foo');
-
-        expect(foo.exists(__filename)).be.true;
-        expect(foo.exists("/path/to/invalid")).be.false;
-    });
-
-
-    it('service method factory', function () {
-        con.register('fs', {
-            factory: {
-                module: 'fs'
-            }
-        });
-
-        con.register('foo', {
-            factory: {
-                service: "bar",
-                method: "<%= factory_method %>",
-                arguments: [ "@fs" ]
-            }
-        });
-
-        con.register('bar', {
-            factory: {
-                module: "<%= sample_path %>/service_function_factory"
             }
         });
 
