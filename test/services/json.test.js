@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var Paranoic = require('../');
+var Paranoic = require('../..');
 
 describe('register by json', function () {
     var filename = __dirname + "/samples/configuration.json";

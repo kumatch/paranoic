@@ -1,5 +1,5 @@
 var expect = require('chai').expect;
-var Paranoic = require('../');
+var Paranoic = require('../..');
 
 describe('factory and injection', function () {
     var con;

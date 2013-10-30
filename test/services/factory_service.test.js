@@ -1,16 +1,16 @@
 var expect = require('chai').expect;
-var Paranoic = require('../');
+var Paranoic = require('../..');
 
-describe('factory on object properties', function () {
+describe('factory service', function () {
     var con;
 
     beforeEach(function () {
         con = new Paranoic();
         con.setParameter('sample_path', __dirname + "/samples");
+        con.setParameter('factory_method', "create");
     });
 
-
-    it('factory function of object property', function () {
+    it('service function factory', function () {
 
         con.register('fs', {
             factory: {
@@ -20,9 +20,14 @@ describe('factory on object properties', function () {
 
         con.register('foo', {
             factory: {
-                module: "<%= sample_path %>/function_factory_of_object_property",
-                property: "example",
+                service: "bar",
                 arguments: [ "@fs" ]
+            }
+        });
+
+        con.register('bar', {
+            factory: {
+                module: "<%= sample_path %>/service_function_factory"
             }
         });
 
@@ -33,7 +38,7 @@ describe('factory on object properties', function () {
     });
 
 
-    it('factory constructor of object property', function () {
+    it('service method factory', function () {
         con.register('fs', {
             factory: {
                 module: 'fs'
@@ -42,31 +47,15 @@ describe('factory on object properties', function () {
 
         con.register('foo', {
             factory: {
-                module: "<%= sample_path %>/constructor_factory_of_object_property",
-                property: "example",
+                service: "bar",
+                method: "<%= factory_method %>",
                 arguments: [ "@fs" ]
             }
         });
 
-        var foo = con.get('foo');
-
-        expect(foo.exists(__filename)).be.true;
-        expect(foo.exists("/path/to/invalid")).be.false;
-    });
-
-    it('factory method of object property', function () {
-        con.register('fs', {
+        con.register('bar', {
             factory: {
-                module: 'fs'
-            }
-        });
-
-        con.register('foo', {
-            factory: {
-                module: "<%= sample_path %>/method_factory_of_object_property",
-                property: "example",
-                method: "create",
-                arguments: [ "@fs" ]
+                module: "<%= sample_path %>/service_method_factory"
             }
         });
 
