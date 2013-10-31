@@ -2,36 +2,37 @@ var expect = require('chai').expect;
 var Paranoic = require('../..');
 
 describe('factory service', function () {
-    var con;
+    var paranoic;
 
     beforeEach(function () {
-        con = new Paranoic();
-        con.setParameter('sample_path', __dirname + "/samples");
-        con.setParameter('factory_method', "create");
+        paranoic = new Paranoic();
+        paranoic.setParameter('sample_path', __dirname + "/samples");
+        paranoic.setParameter('factory_method', "create");
     });
 
     it('service function factory', function () {
 
-        con.register('fs', {
+        paranoic.register('fs', {
             factory: {
                 module: 'fs'
             }
         });
 
-        con.register('foo', {
+        paranoic.register('foo', {
             factory: {
                 service: "bar",
                 arguments: [ "@fs" ]
             }
         });
 
-        con.register('bar', {
+        paranoic.register('bar', {
             factory: {
                 module: "<%= sample_path %>/service_function_factory"
             }
         });
 
-        var foo = con.get('foo');
+        var container = paranoic.createContainer();
+        var foo = container.get('foo');
 
         expect(foo.exists(__filename)).be.true;
         expect(foo.exists("/path/to/invalid")).be.false;
@@ -39,13 +40,13 @@ describe('factory service', function () {
 
 
     it('service method factory', function () {
-        con.register('fs', {
+        paranoic.register('fs', {
             factory: {
                 module: 'fs'
             }
         });
 
-        con.register('foo', {
+        paranoic.register('foo', {
             factory: {
                 service: "bar",
                 method: "<%= factory_method %>",
@@ -53,13 +54,14 @@ describe('factory service', function () {
             }
         });
 
-        con.register('bar', {
+        paranoic.register('bar', {
             factory: {
                 module: "<%= sample_path %>/service_method_factory"
             }
         });
 
-        var foo = con.get('foo');
+        var container = paranoic.createContainer();
+        var foo = container.get('foo');
 
         expect(foo.exists(__filename)).be.true;
         expect(foo.exists("/path/to/invalid")).be.false;

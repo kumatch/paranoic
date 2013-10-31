@@ -2,23 +2,23 @@ var expect = require('chai').expect;
 var Paranoic = require('../..');
 
 describe('factory on object properties', function () {
-    var con;
+    var paranoic;
 
     beforeEach(function () {
-        con = new Paranoic();
-        con.setParameter('sample_path', __dirname + "/samples");
+        paranoic = new Paranoic();
+        paranoic.setParameter('sample_path', __dirname + "/samples");
     });
 
 
     it('factory function of object property', function () {
 
-        con.register('fs', {
+        paranoic.register('fs', {
             factory: {
                 module: 'fs'
             }
         });
 
-        con.register('foo', {
+        paranoic.register('foo', {
             factory: {
                 module: "<%= sample_path %>/function_factory_of_object_property",
                 property: "example",
@@ -26,7 +26,8 @@ describe('factory on object properties', function () {
             }
         });
 
-        var foo = con.get('foo');
+        var container = paranoic.createContainer();
+        var foo = container.get('foo');
 
         expect(foo.exists(__filename)).be.true;
         expect(foo.exists("/path/to/invalid")).be.false;
@@ -34,13 +35,13 @@ describe('factory on object properties', function () {
 
 
     it('factory constructor of object property', function () {
-        con.register('fs', {
+        paranoic.register('fs', {
             factory: {
                 module: 'fs'
             }
         });
 
-        con.register('foo', {
+        paranoic.register('foo', {
             factory: {
                 module: "<%= sample_path %>/constructor_factory_of_object_property",
                 property: "example",
@@ -48,20 +49,21 @@ describe('factory on object properties', function () {
             }
         });
 
-        var foo = con.get('foo');
+        var container = paranoic.createContainer();
+        var foo = container.get('foo');
 
         expect(foo.exists(__filename)).be.true;
         expect(foo.exists("/path/to/invalid")).be.false;
     });
 
     it('factory method of object property', function () {
-        con.register('fs', {
+        paranoic.register('fs', {
             factory: {
                 module: 'fs'
             }
         });
 
-        con.register('foo', {
+        paranoic.register('foo', {
             factory: {
                 module: "<%= sample_path %>/method_factory_of_object_property",
                 property: "example",
@@ -70,7 +72,8 @@ describe('factory on object properties', function () {
             }
         });
 
-        var foo = con.get('foo');
+        var container = paranoic.createContainer();
+        var foo = container.get('foo');
 
         expect(foo.exists(__filename)).be.true;
         expect(foo.exists("/path/to/invalid")).be.false;

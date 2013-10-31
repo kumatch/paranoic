@@ -2,18 +2,16 @@ var expect = require('chai').expect;
 var Paranoic = require('../..');
 
 describe('calls injection', function () {
-    var con;
+    var paranoic;
 
     before(function () {
-        con = new Paranoic();
-
-        con.register('fs', {
+        paranoic = new Paranoic();
+        paranoic.register('fs', {
             factory: {
                 module: 'fs'
             }
         });
-
-        con.register('foo', {
+        paranoic.register('foo', {
             factory: {
                 module: __dirname + "/samples/call_methods",
                 arguments: [ ]
@@ -26,7 +24,8 @@ describe('calls injection', function () {
     });
 
     it('get foo service', function () {
-        var foo = con.get('foo');
+        var container = paranoic.createContainer();
+        var foo = container.get('foo');
 
         expect(foo.name).be.equals("OK");
         expect(foo.exists(__filename)).be.true;

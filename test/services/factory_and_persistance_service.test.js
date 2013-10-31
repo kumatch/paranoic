@@ -2,16 +2,16 @@ var expect = require('chai').expect;
 var Paranoic = require('../..');
 
 describe('persistence service', function () {
-    var con;
+    var paranoic;
 
     beforeEach(function () {
-        con = new Paranoic();
-        con.setParameter('sample_path', __dirname + "/samples");
+        paranoic = new Paranoic();
+        paranoic.setParameter('sample_path', __dirname + "/samples");
     });
 
 
     it('register not persistence service', function () {
-        con.register('foo', {
+        paranoic.register('foo', {
             factory: {
                 module: __dirname + "/samples/properties.js",
                 arguments: []
@@ -21,8 +21,10 @@ describe('persistence service', function () {
             }
         });
 
-        var foo1 = con.get('foo');
-        var foo2 = con.get('foo');
+        var container = paranoic.createContainer();
+
+        var foo1 = container.get('foo');
+        var foo2 = container.get('foo');
 
         expect(foo1.name).to.equals("OK");
         expect(foo2.name).to.equals("OK");
@@ -32,11 +34,11 @@ describe('persistence service', function () {
         expect(foo1.name).to.equals("modified");
         expect(foo2.name).to.equals("OK");
 
-        expect(con.get('foo').name).to.equals("OK");
+        expect(container.get('foo').name).to.equals("OK");
     });
 
     it('register persistence service', function () {
-        con.register('foo', {
+        paranoic.register('foo', {
             persistence: true,
             factory: {
                 module: __dirname + "/samples/properties.js",
@@ -47,8 +49,10 @@ describe('persistence service', function () {
             }
         });
 
-        var foo1 = con.get('foo');
-        var foo2 = con.get('foo');
+        var container = paranoic.createContainer();
+
+        var foo1 = container.get('foo');
+        var foo2 = container.get('foo');
 
         expect(foo1.name).to.equals("OK");
         expect(foo2.name).to.equals("OK");
@@ -58,6 +62,6 @@ describe('persistence service', function () {
         expect(foo1.name).to.equals("modified");
         expect(foo2.name).to.equals("modified");
 
-        expect(con.get('foo').name).to.equals("modified");
+        expect(container.get('foo').name).to.equals("modified");
     });
 });

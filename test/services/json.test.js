@@ -3,22 +3,24 @@ var Paranoic = require('../..');
 
 describe('register by json', function () {
     var filename = __dirname + "/samples/configuration.json";
-    var con;
+    var paranoic;
 
     before(function () {
-        con = new Paranoic(filename);
-        con.setParameter('sample_path', __dirname + "/samples");
+        paranoic = new Paranoic(filename);
+        paranoic.setParameter('sample_path', __dirname + "/samples");
     });
 
     it('use a service of function arguments injection', function () {
-        var service = con.get('foo');
+        var container = paranoic.createContainer();
+        var service = container.get('foo');
 
         expect(service.exists(__filename)).be.true;
         expect(service.exists("/path/to/invalid")).be.false;
     });
 
     it('use a service of method calls injection', function () {
-        var service = con.get('bar');
+        var container = paranoic.createContainer();
+        var service = container.get('bar');
 
         expect(service.name).be.equals("OK");
         expect(service.exists(__filename)).be.true;
@@ -26,7 +28,8 @@ describe('register by json', function () {
     });
 
     it('use a service of properies injection', function () {
-        var service = con.get('baz');
+        var container = paranoic.createContainer();
+        var service = container.get('baz');
 
         expect(service.name).be.equals("OK");
         expect(service.exists(__filename)).be.true;
