@@ -14,7 +14,9 @@ describe('persistence service', function () {
         paranoic.register('foo', {
             factory: {
                 module: __dirname + "/samples/properties.js",
-                arguments: []
+                call: {
+                    arguments: []
+                }
             },
             properties: {
                 name: "OK"
@@ -42,7 +44,7 @@ describe('persistence service', function () {
             persistence: true,
             factory: {
                 module: __dirname + "/samples/properties.js",
-                arguments: []
+                call: true
             },
             properties: {
                 name: "OK"

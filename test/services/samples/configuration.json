@@ -15,14 +15,16 @@
     "foo": {
       "factory": {
         "module": "<%= sample_path %>/function_factory",
-        "arguments": [ "@fs" ]
+        "call": {
+          "arguments": [ "@fs" ]
+        }
       }
     },
 
     "bar": {
       "factory": {
         "module": "<%= sample_path %>/call_methods",
-        "arguments": [ ]
+        "call": true
       },
       "calls": [
         { "method": "setName", "arguments": [ "OK" ]  },
@@ -33,7 +35,9 @@
     "baz": {
       "factory": {
         "module": "<%= sample_path %>/properties",
-        "arguments": [ ]
+        "call": {
+          "arguments": []
+        }
       },
       "properties": {
         "name": "OK",

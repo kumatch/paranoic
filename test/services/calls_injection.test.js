@@ -14,7 +14,7 @@ describe('calls injection', function () {
         paranoic.register('foo', {
             factory: {
                 module: __dirname + "/samples/call_methods",
-                arguments: [ ]
+                call: true
             },
             calls: [
                 { method: 'setName', arguments: [ "OK" ] },

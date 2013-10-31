@@ -21,7 +21,9 @@ describe('factory service', function () {
         paranoic.register('foo', {
             factory: {
                 service: "bar",
-                arguments: [ "@fs" ]
+                call: {
+                    arguments: [ "@fs" ]
+                }
             }
         });
 
@@ -49,8 +51,10 @@ describe('factory service', function () {
         paranoic.register('foo', {
             factory: {
                 service: "bar",
-                method: "<%= factory_method %>",
-                arguments: [ "@fs" ]
+                call: {
+                    method: "<%= factory_method %>",
+                    arguments: [ "@fs" ]
+                }
             }
         });
 

@@ -73,7 +73,9 @@ describe('factory and injection', function () {
         paranoic.register('foo', {
             factory: {
                 module: "<%= sample_path %>/function_factory",
-                arguments: [ "@fs" ]
+                call: {
+                    arguments: [ "@fs" ]
+                }
             }
         });
 
@@ -95,7 +97,9 @@ describe('factory and injection', function () {
         paranoic.register('foo', {
             factory: {
                 module: "<%= sample_path %>/constructor_factory",
-                arguments: [ "@fs" ]
+                call: {
+                    arguments: [ "@fs" ]
+                }
             }
         });
 
@@ -116,8 +120,10 @@ describe('factory and injection', function () {
         paranoic.register('foo', {
             factory: {
                 module: "<%= sample_path %>/method_factory",
-                method: "<%= factory_method %>",
-                arguments: [ "@fs" ]
+                call: {
+                    method: "<%= factory_method %>",
+                    arguments: [ "@fs" ]
+                }
             }
         });
 

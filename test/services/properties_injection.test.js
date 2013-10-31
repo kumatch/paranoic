@@ -16,7 +16,7 @@ describe('properties injection', function () {
         paranoic.register('foo', {
             factory: {
                 module: __dirname + "/samples/properties",
-                arguments: [ ]
+                call: true
             },
             properties: {
                 name: "OK",

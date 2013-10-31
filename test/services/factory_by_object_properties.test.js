@@ -22,7 +22,9 @@ describe('factory on object properties', function () {
             factory: {
                 module: "<%= sample_path %>/function_factory_of_object_property",
                 property: "example",
-                arguments: [ "@fs" ]
+                call: {
+                    arguments: [ "@fs" ]
+                }
             }
         });
 
@@ -45,7 +47,9 @@ describe('factory on object properties', function () {
             factory: {
                 module: "<%= sample_path %>/constructor_factory_of_object_property",
                 property: "example",
-                arguments: [ "@fs" ]
+                call: {
+                    arguments: [ "@fs" ]
+                }
             }
         });
 
@@ -67,8 +71,10 @@ describe('factory on object properties', function () {
             factory: {
                 module: "<%= sample_path %>/method_factory_of_object_property",
                 property: "example",
-                method: "create",
-                arguments: [ "@fs" ]
+                call: {
+                    method: "create",
+                    arguments: [ "@fs" ]
+                }
             }
         });
 
