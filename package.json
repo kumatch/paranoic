@@ -3,7 +3,7 @@
   "name": "paranoic",
   "description": "Dependency injection and service container for Node",
   "version": "0.3.1",
-  "main": "./lib/container.js",
+  "main": "./lib/paranoic.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/kumatch/paranoic.git"
